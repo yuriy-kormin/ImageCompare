@@ -1,195 +1,149 @@
-﻿using ImageComparator.Filters;
-
-namespace ImageComparator;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Drawing.Imaging;
-
 
 
 public class ImageComparator
 {
-    static void Main(string[] args)
+    private static int squareSize { get; } = 15;
+    private static int PixelCounterPercentageThreshold { get; } = 20;
+    private static int PixelBrightPercentageThreshold { get; } = 10;
+
+    public static List<(int x1, int y1, int x2, int y2)> Squares { get; private set; } =
+        new List<(int, int, int, int)>();
+
+    public static List<double> bright {get; private set; } = new List<double>();
+
+    public static void ImageCompare()
     {
-        // Input and output file paths
-        // string inputFile = "input.jpg";
         string imagePath1 = "1-1.jpg";
         string imagePath2 = "2-2.jpg";
+        string outputFile = "output.jpg";
 
-        string outputFile = "output2.jpg";
-        var image1 = new Bitmap(imagePath1);
-        var image2 = new Bitmap(imagePath2);
+        Bitmap bitmap1 = new Bitmap(imagePath1);
+        Bitmap bitmap2 = new Bitmap(imagePath2);
+        Bitmap bitmapResult = new Bitmap(imagePath2); // Create result bitmap with the same dimensions
         
-        var c_image1 = IncreaseContrast.Process(image1);
-        var c_image2 = IncreaseContrast.Process(image2);
+        double sigma = 2.0;
+        Bitmap bitmap1_b = GaussBlur.ApplyGaussianBlur(bitmap1, sigma);
+        Bitmap bitmap2_b = GaussBlur.ApplyGaussianBlur(bitmap2, sigma);
+        bitmap2_b.Save($"2{outputFile}");
         
-        c_image1.Save($"c_{imagePath1}", ImageFormat.Jpeg);
-        c_image2.Save($"c_{imagePath2}", ImageFormat.Jpeg);
-        
-        var g_image1 = GrayScale.Process(image1);
-        var g_image2 = GrayScale.Process(image2);
-        
-        g_image1.Save($"g_{imagePath1}", ImageFormat.Jpeg);
-        g_image2.Save($"g_{imagePath2}", ImageFormat.Jpeg);
+        Rectangle fullRect = new Rectangle(0, 0, bitmap1.Width, bitmap1.Height);
+        BitmapData bitmapData1 = bitmap1_b.LockBits(fullRect, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+        BitmapData bitmapData2 = bitmap2_b.LockBits(fullRect, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+        BitmapData bitmapResultData = bitmapResult.LockBits(fullRect, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
 
-
-        //
-        // Bitmap result = CompareAndReplacePixels(image1,image1, image2,50);
-        // result.Save($"o_{outputFile}",ImageFormat.Jpeg);
-        
-        Bitmap c_result = CompareAndReplacePixels(image1,g_image1, g_image2,50);
-        c_result.Save($"c_{outputFile}",ImageFormat.Jpeg);
-        
-        Bitmap g_result = CompareAndReplacePixels(image1,g_image1, g_image2,50);
-        g_result.Save($"c_g_{outputFile}",ImageFormat.Jpeg);
-
-
-        // //
-        // AppContext.TryGetSwitch("System.Drawing.EnableUnixSupport", out bool isSDCEnabled);
-        // Console.WriteLine(isSDCEnabled);
-
-        // AppContext.SetSwitch("System.Drawing.EnableUnixSupport", true);
-        //
-        // AppContext.TryGetSwitch("System.Drawing.EnableUnixSupport", out bool isSDCEnabled);
-        // Console.WriteLine(isSDCEnabled);
-    }
-
-    //     try
-    //     {
-    //         // Load the input image
-    //         using (Bitmap bitmap = new Bitmap(inputFile))
-    //         {
-    //             // Invert colors using LockBits
-    //             InvertColors(bitmap);
-    //             
-    //             // Save the manipulated image
-    //             bitmap.Save(outputFile, ImageFormat.Jpeg);
-    //         }
-    //     
-    //         Console.WriteLine("Image processed and saved to " + outputFile);
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         Console.WriteLine("Error: " + ex.Message);
-    //     }
-    // }
-    
-    static Bitmap CompareAndReplacePixels(Bitmap image0, Bitmap image1, Bitmap image2,int threshold)
-    {
-        if (image1.Width != image2.Width || image1.Height != image2.Height)
-            throw new ArgumentException("Images must have the same dimensions.");
-
-        Bitmap result = new Bitmap(image1.Width, image1.Height, PixelFormat.Format24bppRgb);
-        Rectangle rect = new Rectangle(0, 0, image1.Width, image1.Height);
-
-        // Lock bits for all three images
-        BitmapData data0 = image0.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-        BitmapData data1 = image1.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-        BitmapData data2 = image2.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-        BitmapData resultData = result.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
-
-        int bytes = Math.Abs(data1.Stride) * image1.Height;
-
-        // Allocate managed arrays for pixel data
-        byte[] buffer0 = new byte[bytes];
-        byte[] buffer1 = new byte[bytes];
-        byte[] buffer2 = new byte[bytes];
-        byte[] resultBuffer = new byte[bytes];
-
-        // Copy data to managed arrays
-        Marshal.Copy(data0.Scan0, buffer0, 0, bytes);
-        Marshal.Copy(data1.Scan0, buffer1, 0, bytes);
-        Marshal.Copy(data2.Scan0, buffer2, 0, bytes);
-
-        // Process pixel data
-        int bytesPerPixel = 3; // 24 bits per pixel = 3 bytes
-        for (int i = 0; i < bytes; i += bytesPerPixel)
-        {
-            byte b0 = buffer0[i];
-            byte g0 = buffer0[i + 1];
-            byte r0 = buffer0[i + 2];
-            
-            byte b1 = buffer1[i];
-            byte g1 = buffer1[i + 1];
-            byte r1 = buffer1[i + 2];
-
-            byte b2 = buffer2[i];
-            byte g2 = buffer2[i + 1];
-            byte r2 = buffer2[i + 2];
-            
-            int diffR = r1 - r2;
-            int diffG = g1 - g2;
-            int diffB = b1 - b2;
-            int distance = (int)Math.Sqrt(diffR * diffR + diffG * diffG + diffB * diffB);
-
-            if (distance > threshold)
-            
-            {
-                // Replace with pixel from image2
-                resultBuffer[i] = 0;
-                resultBuffer[i + 1] = 0;
-                resultBuffer[i + 2] = 255;
-            }
-            else
-            {
-                // Keep original pixel from image1
-                resultBuffer[i] = b0;
-                resultBuffer[i + 1] = g0;
-                resultBuffer[i + 2] = r0;
-            }
-        }
-
-        Marshal.Copy(resultBuffer, 0, resultData.Scan0, bytes);
-
-        // Unlock bits
-        image0.UnlockBits(data0);
-        image1.UnlockBits(data1);
-        image2.UnlockBits(data2);
-        result.UnlockBits(resultData);
-
-        return result;
-    }
-
-    static void InvertColors(Bitmap bitmap)
-    {
-        // Lock the bitmap's bits
-        Rectangle rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
-        BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.ReadWrite, bitmap.PixelFormat);
-        
         try
         {
-            // Get the address of the first pixel
-            IntPtr ptr = bitmapData.Scan0;
-        
-            // Calculate the number of bytes in the image
-            int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
-            int byteCount = bitmapData.Stride * bitmap.Height;
-        
-            // Create a byte array to hold the pixel data
-            byte[] pixels = new byte[byteCount];
-            System.Runtime.InteropServices.Marshal.Copy(ptr, pixels, 0, byteCount);
-        
-            // Iterate through each pixel
-            for (int y = 0; y < bitmap.Height; y++)
+            int width = bitmap1.Width;
+            int height = bitmap1.Height;
+
+            unsafe
             {
-                for (int x = 0; x < bitmap.Width; x++)
+                byte* resultPtr = (byte*)bitmapResultData.Scan0;
+
+                // Iterate through squares
+                for (int y = 0; y < height; y += squareSize)
                 {
-                    int index = y * bitmapData.Stride + x * bytesPerPixel;
-        
-                    // Invert the color values (assumes 24bpp or 32bpp image format)
-                    pixels[index] = (byte)(255 - pixels[index]);       // Blue
-                    pixels[index + 1] = (byte)(255 - pixels[index + 1]); // Green
-                    pixels[index + 2] = (byte)(255 - pixels[index + 2]); // Red
+                    for (int x = 0; x < width; x += squareSize)
+                    {
+                        int currentSquareWidth = Math.Min(squareSize, width - x);
+                        int currentSquareHeight = Math.Min(squareSize, height - y);
+                        Rectangle squareRect = new Rectangle(x, y, currentSquareWidth, currentSquareHeight);
+
+                        if (!IsSquareMatchWithDrift(x, y, bitmapData1, bitmapData2, squareRect))
+                        {
+                            Draw.DrawRedBorder(resultPtr, x, y, currentSquareWidth, currentSquareHeight, bitmapResultData.Stride, 3);
+                        }
+                    }
                 }
             }
-        
-            // Copy the modified pixel data back to the bitmap
-            System.Runtime.InteropServices.Marshal.Copy(pixels, 0, ptr, byteCount);
         }
         finally
         {
-            // Unlock the bits
-            bitmap.UnlockBits(bitmapData);
+            bitmap1_b.UnlockBits(bitmapData1);
+            bitmap2_b.UnlockBits(bitmapData2);
+            bitmapResult.UnlockBits(bitmapResultData);
         }
+
+        bitmapResult.Save(outputFile);
+        Console.WriteLine($"Output saved to {outputFile}");
+        float max = float.MinValue;
+        float min = float.MaxValue;
+        foreach (float number in bright)
+        {
+            if (number > max) max = number;
+            if (number < min) min = number;
+        }
+        
+        Console.WriteLine($"min value={min}, max value={max}");
+    }
+
+    
+
+    // Check if a single pixel has a significant difference
+    static unsafe bool IsPixelMatch(int x, int y, BitmapData bitmapData1, BitmapData bitmapData2)
+    {
+        int bytesPerPixel = 3; // Assuming 24bppRgb format
+        int stride1 = bitmapData1.Stride;
+        int stride2 = bitmapData2.Stride;
+
+        byte* ptr1 = (byte*)bitmapData1.Scan0 + y * stride1 + x * bytesPerPixel;
+        byte* ptr2 = (byte*)bitmapData2.Scan0 + y * stride2 + x * bytesPerPixel;
+
+        // Get RGB values and calculate the difference
+        double brightness1 = 0.299 * ptr1[2] + 0.587 * ptr1[1] + 0.114 * ptr1[0];
+        double brightness2 = 0.299 * ptr2[2] + 0.587 * ptr2[1] + 0.114 * ptr2[0];
+
+
+        var diff = (double)Math.Abs(brightness1 - brightness2)*0.392156;
+        return diff < (double)PixelBrightPercentageThreshold;
+    }
+
+    static bool IsSquareMatchWithDrift(int x, int y, BitmapData bitmapData1, BitmapData bitmapData2, Rectangle squareRect)
+    {
+        // int driftRange = squareSize/2;
+        int driftRange = 1;
+
+        for (int dy = 0; dy <= driftRange; dy++)
+        {
+            for (int dx = 0; dx <= driftRange; dx++)
+            {
+                if (IsDriftMatch(x, dx, y, dy, bitmapData1, bitmapData2, squareRect))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    static bool IsDriftMatch(int x, int dx, int y, int dy, BitmapData bitmapData1, BitmapData bitmapData2, Rectangle squareRect)
+    {
+        return IsSquareMatch(x+dx, y+dy, bitmapData1, bitmapData2, squareRect)|| 
+               IsSquareMatch(x-dx, y-dy, bitmapData1, bitmapData2, squareRect);
+    }
+    static unsafe bool IsSquareMatch(int x, int y, BitmapData bitmapData1, BitmapData bitmapData2, Rectangle squareRect)
+    {
+        int differenceCounter = 0;
+        for (int j = 0; j < squareRect.Height; j++)
+        {
+            for (int i = 0; i < squareRect.Width; i++)
+            {
+                int pixelX = x + i;
+                int pixelY = y + j;
+
+                if (!IsPixelMatch(pixelX, pixelY, bitmapData1, bitmapData2))
+                {
+                    differenceCounter++;
+                }
+            }
+        }
+        var pixelCount = squareRect.Height * squareRect.Width;
+        // Console.WriteLine($"Pixel count: {((double)differenceCounter / pixelCount) * 100}");
+        return ((double)differenceCounter / pixelCount) * 100 <= PixelCounterPercentageThreshold;
     }
 }

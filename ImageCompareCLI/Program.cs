@@ -1,15 +1,16 @@
 ﻿using ImageCompareCLI.utils;
-
 public class Program
 {
     public static void Main(string[] args)
     {
         var Keys = ArgParser.Parse(args);
-        foreach (var VARIABLE in Keys)
-        {
-            Console.WriteLine(VARIABLE);   
-        }
+        // foreach (var VARIABLE in Keys)
+        // {
+        //     Console.WriteLine(VARIABLE);   
+        // }
+        ImageComparator.ImageCompare();
 
-        ArgParser.ShowUsage();
+
+        // ArgParser.ShowUsage();
     }
 }
