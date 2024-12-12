@@ -1,9 +1,9 @@
-using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-// namespace ImageComparator;
 
-public class GaussBlur
+namespace ImageComparator.Filters
+{
+    public class GaussBlur
 {
     public static Bitmap ApplyGaussianBlur(Bitmap sourceBitmap, double sigma)
     {
@@ -94,4 +94,6 @@ public class GaussBlur
 
         return kernel;
     }
+}
+    
 }
