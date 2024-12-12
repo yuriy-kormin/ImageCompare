@@ -1,40 +1,34 @@
-namespace ImageCompareCLI.utils;
+namespace ImageCompareCLI.Utils;
 
-public class ArgParser
+public static class ArgParser
 {
-    public static readonly Dictionary<string,string> DefaultsArgs =  new Dictionary<string, string>
+    // Dictionary to store default argument values
+    public static readonly Dictionary<string, string> DefaultArgs = new()
     {
-        {"--file1","1.jpg"},
-        {"--file2","2.jpg"},
-        {"--threadshold","0"},
-        {"--diffcount","-1"} // max
+        { "--file1", "1.jpg" },
+        { "--file2", "2.jpg" },
+        { "--threshold", "0" },
+        { "--diffcount", "-1" } // Max
     };
-    
-    public static Dictionary<string,string> Parse(string[] args)
+
+    public static Dictionary<string, string> Parse(string[] args)
     {
         var result = new Dictionary<string, string>();
 
-        foreach (var arg in DefaultsArgs)
+        foreach (var (key, defaultValue) in DefaultArgs)
         {
-            var value = args.Where(k => k.StartsWith(arg.Key))
-                .FirstOrDefault() ?? $"{arg.Key}={arg.Value}"; 
-
-            var splitValue = value.Split(new[] { '=' }, 2);
-
-            result[arg.Key] = splitValue.Length > 1 && splitValue[0] == arg.Key
-                ? splitValue[1]
-                : arg.Value;
+            // Find the argument in the input, or use the default
+            var inputArg = args.FirstOrDefault(arg => arg.StartsWith($"{key}="));
+            var value = inputArg?.Split('=', 2)[1] ?? defaultValue;
+            result[key] = value;
         }
+
         return result;
     }
 
     public static void ShowUsage()
     {
-        Console.Write($"Usage: dotnet run ");
-        foreach (var k in DefaultsArgs.Keys)
-        {
-            Console.Write($" {k}=<value>");
-        }
-        Console.WriteLine();
+        var usage = string.Join(" ", DefaultArgs.Keys.Select(k => $"{k}=<value>"));
+        Console.WriteLine($"Usage: dotnet run {usage}");
     }
 }
