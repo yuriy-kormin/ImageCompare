@@ -1,16 +1,29 @@
-﻿using ImageCompareCLI.utils;
+﻿using System.Drawing;
+using ImageCompareCLI.Utils;
+
 public class Program
 {
     public static void Main(string[] args)
     {
-        var Keys = ArgParser.Parse(args);
-        // foreach (var VARIABLE in Keys)
-        // {
-        //     Console.WriteLine(VARIABLE);   
-        // }
-        ImageComparator.ImageCompare();
-
-
-        // ArgParser.ShowUsage();
+        
+        ArgParser.Parse(args);
+        
+        if (!ArgValidator.IsArgValid())
+        {
+            ConsolePrint.PrintError("\t Invalid arguments.Break execution....");
+            ConsolePrint.ShowUsage();
+            return;
+        }
+        
+        using(Bitmap bitmap1 = new Bitmap(ArgParser.Args["--file1"]))
+        using(Bitmap bitmap2 = new Bitmap(ArgParser.Args["--file2"]))
+        using(Bitmap resultBitmap = new Bitmap(ArgParser.OutputFilename))
+        {
+            int threadshold = int.Parse(ArgParser.Args["--threshold"]);
+            int diffcount = int.Parse(ArgParser.Args["--diffcount"]);
+            
+            ImageComparator.ImageCompare( bitmap1, bitmap2, resultBitmap, threadshold, diffcount );
+        }
+        
     }
 }
