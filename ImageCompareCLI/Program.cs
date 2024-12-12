@@ -20,12 +20,14 @@ namespace ImageCompareCLI
         
             using(Bitmap bitmap1 = new Bitmap(ArgParser.Args["--file1"]))
             using(Bitmap bitmap2 = new Bitmap(ArgParser.Args["--file2"]))
-            using(Bitmap resultBitmap = new Bitmap(ArgParser.OutputFilename))
             {
                 int threadshold = int.Parse(ArgParser.Args["--threshold"]);
                 int diffcount = int.Parse(ArgParser.Args["--diffcount"]);
             
-                Comparator.ImageCompare( bitmap1, bitmap2, resultBitmap, threadshold, diffcount );
+                var bitmapResult = Comparator.ImageCompare( bitmap1, bitmap2, threadshold, diffcount );
+                bitmapResult.Save(ArgParser.OutputFilename);
+                bitmapResult.Dispose();
+                ConsolePrint.PrintSuccess($"Output file saved to {ArgParser.OutputFilename}");
             }
         
         }

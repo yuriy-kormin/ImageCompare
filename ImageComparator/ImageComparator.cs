@@ -12,27 +12,35 @@ namespace ImageComparator
         private static double GaussianSigma { get; } = 2.0f;
         private static int PixelBrightPercentageThreshold { get; set; } = 10; // overwritten by input theadshold
 
-        public static void ImageCompare(Bitmap bitmap1, Bitmap bitmap2, Bitmap bitmapResult, int threshold,int diffcount)
+        public static Bitmap ImageCompare(Bitmap bitmap1, Bitmap bitmap2, int threshold,int diffcount)
         {
             PixelBrightPercentageThreshold = threshold;
+            var bitmapResult = new Bitmap(bitmap2);
             
-            bitmap1= GaussBlur.ApplyGaussianBlur(bitmap1, GaussianSigma);
-            bitmap2 = GaussBlur.ApplyGaussianBlur(bitmap2, GaussianSigma);
+            foreach (Bitmap bm in new[] { bitmap1, bitmap2 })
+            {
+                GaussBlur.ApplyGaussianBlur(bm, GaussianSigma);    
+            }
+            bitmap1.Save("some_fn.jpg");
             
             Rectangle fullRect = new Rectangle(0, 0, bitmap1.Width, bitmap1.Height);
             
-            BitmapData bitmapData1 = bitmap1.LockBits(fullRect, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-            BitmapData bitmapData2 = bitmap2.LockBits(fullRect, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-            BitmapData bitmapResultData = bitmapResult.LockBits(fullRect, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
-
+            BitmapData bitmapData1 = null;
+            BitmapData bitmapData2 = null;
+            BitmapData bitmapDataResult = null;
+            
             try
             {
                 int width = bitmap1.Width;
                 int height = bitmap1.Height;
 
+                bitmapData1 = BitmapLockBits.Lock(bitmap1, ImageLockMode.ReadOnly);
+                bitmapData2 = BitmapLockBits.Lock(bitmap2, ImageLockMode.ReadOnly);
+                bitmapDataResult = BitmapLockBits.Lock(bitmapResult, ImageLockMode.WriteOnly);
+                    
                 unsafe
                 {
-                    byte* resultPtr = (byte*)bitmapResultData.Scan0;
+                    byte* resultPtr = (byte*)bitmapDataResult.Scan0;
 
                     // Iterate through squares
                     for (int y = 0; y < height; y += squareSize)
@@ -45,7 +53,7 @@ namespace ImageComparator
 
                             if (!IsSquareMatchWithDrift(x, y, bitmapData1, bitmapData2, squareRect))
                             {
-                                // Draw.DrawBorder(resultPtr, x, y, currentSquareWidth, currentSquareHeight, bitmapResultData.Stride, 3);
+                                DrawRectangles.DrawBorder(resultPtr, x, y, currentSquareWidth, currentSquareHeight, bitmapDataResult.Stride, 3);
                                 CombineSquares.AddOrExtend(x, y, x+currentSquareWidth, y+currentSquareHeight);
                             }
                         }
@@ -53,17 +61,19 @@ namespace ImageComparator
                     
                     foreach (var square in CombineSquares.Squares)
                     {
-                        DrawRectangles.DrawBorder(resultPtr, square.x1, square.y1, square.x2 - square.x1, square.y2-square.y1, bitmapResultData.Stride, 3, new List<int>(){255,0,0});    
+                        DrawRectangles.DrawBorder(resultPtr, square.x1, square.y1, square.x2 - square.x1, square.y2-square.y1, bitmapDataResult.Stride, 3, new List<int>(){255,0,0});    
                     }
                 }
                 
             }
             finally
             {
-                bitmap1.UnlockBits(bitmapData1);
-                bitmap2.UnlockBits(bitmapData2);
-                bitmapResult.UnlockBits(bitmapResultData);
+                if (bitmapData1 !=null){bitmap1.UnlockBits(bitmapData1);}
+                if (bitmapData2 !=null){bitmap2.UnlockBits(bitmapData2);}
+                if (bitmapDataResult !=null){bitmapResult.UnlockBits(bitmapDataResult);}
             }
+
+            return bitmapResult;
         }
 
         
@@ -89,8 +99,8 @@ namespace ImageComparator
 
         static bool IsSquareMatchWithDrift(int x, int y, BitmapData bitmapData1, BitmapData bitmapData2, Rectangle squareRect)
         {
-            int driftRange = squareSize/2;
-            // int driftRange = 1;
+            // int driftRange = squareSize/2;
+            int driftRange = 1;
 
             for (int dy = 0; dy <= driftRange; dy++)
             {
@@ -128,7 +138,6 @@ namespace ImageComparator
                 }
             }
             var pixelCount = squareRect.Height * squareRect.Width;
-            // Console.WriteLine($"Pixel count: {((double)differenceCounter / pixelCount) * 100}");
             return ((double)differenceCounter / pixelCount) * 100 <= PixelCounterPercentageThreshold;
         }
     }    

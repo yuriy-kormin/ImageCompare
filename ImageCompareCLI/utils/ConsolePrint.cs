@@ -6,6 +6,10 @@ namespace ImageCompareCLI.Utils
         {
             Console.WriteLine($"\x1b[31m✘\x1b[0m {error}");
         }
+        public static void PrintSuccess(string message)
+        {
+            Console.WriteLine($"\x1b[32m\u2714\x1b[0m {message}");
+        }
     
         public static void ShowUsage()
         {
