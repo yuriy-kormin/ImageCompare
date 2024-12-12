@@ -15,7 +15,7 @@ namespace ImageComparator.Filters
 
             // Lock bitmap data for in-place modification
             Rectangle rect = new Rectangle(0, 0, sourceBitmap.Width, sourceBitmap.Height);
-            BitmapData sourceData = null;
+            BitmapData? sourceData = null;
 
             try
             {

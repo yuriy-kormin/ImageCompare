@@ -23,8 +23,11 @@ namespace ImageCompareCLI
             {
                 int threadshold = int.Parse(ArgParser.Args["--threshold"]);
                 int diffcount = int.Parse(ArgParser.Args["--diffcount"]);
-            
-                var bitmapResult = Comparator.ImageCompare( bitmap1, bitmap2, threadshold, diffcount );
+                
+                Settings.PixelBrightPercentageThreshold = threadshold;
+                Settings.DiffCount = diffcount;
+                
+                var bitmapResult = Comparator.ImageCompare( bitmap1, bitmap2);
                 bitmapResult.Save(ArgParser.OutputFilename);
                 bitmapResult.Dispose();
                 ConsolePrint.PrintSuccess($"Output file saved to {ArgParser.OutputFilename}");

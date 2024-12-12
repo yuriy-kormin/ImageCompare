@@ -11,7 +11,7 @@ namespace ImageCompareCLI.Utils
         {
             { "--file1", "1.jpg" },
             { "--file2", "2.jpg" },
-            { "--threshold", "0" }, // [0-100] percent
+            { "--threshold", "10" }, // [0-100] percent
             { "--diffcount", "-1" } // Max [-1-100]
         };
 

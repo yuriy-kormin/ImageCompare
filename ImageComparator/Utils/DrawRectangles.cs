@@ -3,7 +3,7 @@ namespace ImageComparator.Utils
 {
     public class DrawRectangles
     {
-        private static unsafe void SetRed(byte* resPtr, int address,List<int> color)
+        private static unsafe void SetColor(byte* resPtr, int address,List<int> color)
         {
         
             resPtr[address] = (byte)color[0];
@@ -25,8 +25,8 @@ namespace ImageComparator.Utils
                 int topOffset = (y * stride) + ((x + i) * bytesPerPixel);
                 int bottomOffset = ((y + height - 1) * stride) + ((x + i) * bytesPerPixel);
             
-                SetRed(resPtr, topOffset, color);
-                SetRed(resPtr, bottomOffset,color);
+                SetColor(resPtr, topOffset, color);
+                SetColor(resPtr, bottomOffset,color);
             }
 
             // Left and Right borders
@@ -35,8 +35,8 @@ namespace ImageComparator.Utils
                 int leftOffset = ((y + j) * stride) + (x * bytesPerPixel);
                 int rightOffset = ((y + j) * stride) + ((x + width - 1) * bytesPerPixel);
             
-                SetRed(resPtr, leftOffset,color);
-                SetRed(resPtr, rightOffset,color);
+                SetColor(resPtr, leftOffset,color);
+                SetColor(resPtr, rightOffset,color);
             }
         }
     }    
