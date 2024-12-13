@@ -20,6 +20,7 @@ namespace ImageCompareCLI
         
             using(Bitmap bitmap1 = new Bitmap(ArgParser.Args["--file1"]))
             using(Bitmap bitmap2 = new Bitmap(ArgParser.Args["--file2"]))
+            using(Bitmap bitmap3 = new Bitmap(ArgParser.Args["--file2"]))
             {
                 int threadshold = int.Parse(ArgParser.Args["--threshold"]);
                 int diffcount = int.Parse(ArgParser.Args["--diffcount"]);
@@ -27,7 +28,7 @@ namespace ImageCompareCLI
                 Settings.PixelBrightPercentageThreshold = threadshold;
                 Settings.DiffCount = diffcount;
                 
-                var bitmapResult = Comparator.ImageCompare( bitmap1, bitmap2);
+                var bitmapResult = Comparator.ImageCompare( bitmap1, bitmap2, bitmap3);
                 bitmapResult.Save(ArgParser.OutputFilename);
                 bitmapResult.Dispose();
                 ConsolePrint.PrintSuccess($"Output file saved to {ArgParser.OutputFilename}");

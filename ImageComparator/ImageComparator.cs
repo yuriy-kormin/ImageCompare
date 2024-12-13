@@ -16,14 +16,14 @@ namespace ImageComparator
 
     public class Comparator
     {
-        public static Bitmap ImageCompare(Bitmap bitmap1, Bitmap bitmap2)
+        public static Bitmap ImageCompare(Bitmap bitmap1, Bitmap bitmap2, Bitmap bitmapResult)
         {
             InputDataValidator.CheckSameDimensions(bitmap1, bitmap2);
             int width = bitmap1.Width;
             int height = bitmap1.Height;
 
             // var bitmapResult = new Bitmap(bitmap2, bitmap2.Width,bitmap2.Height);
-            var bitmapResult = new Bitmap(bitmap2, width, height);
+            // var bitmapResult = new Bitmap(bitmap2, width, height);
             
             foreach (Bitmap bm in new[] { bitmap1, bitmap2 })
             {
