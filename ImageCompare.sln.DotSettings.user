@@ -4,6 +4,6 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AGibekut_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003F_002E_002E_003F_002E_002E_003Fvar_003Ffolders_003Fvc_003F388v4_005Fmn2z3cj0gz7tyqhfcw0000gq_003FT_003FSandboxFiles_003FPyhasiw_003FGibekut_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=0ab77bec_002Dca3e_002D4f5a_002D982d_002D4416c7702980/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestSettingsDefaule" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
-    &lt;TestId&gt;NUnit3x::192F1BB7-025C-4C12-9A1D-67EA644A15BD::net6.0::ImageComparator.Tests.Tests.TestSettingsDefaule&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::192F1BB7-025C-4C12-9A1D-67EA644A15BD::net6.0::ImageComparator.Tests.FilterTests.GaussianBlurTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

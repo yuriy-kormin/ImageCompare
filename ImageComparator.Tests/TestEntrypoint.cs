@@ -1,6 +1,6 @@
 namespace ImageComparator.Tests;
 using ImageComparator;
-public class Tests
+public class EntryPointTests
 {
     // [SetUp]
     // public void Setup()
