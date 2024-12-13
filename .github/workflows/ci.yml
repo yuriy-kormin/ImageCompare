@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0' 
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build solution
+        run: dotnet build --no-restore --configuration Release
+
+      # Run tests with coverage
+      - name: Run tests and collect coverage
+        run: |
+          dotnet test ImageComparator.Tests/ImageComparator.Tests.csproj \
+            --no-build --configuration Release \
+            /p:CollectCoverage=true \
+            /p:CoverletOutput=coverage/ \
+            /p:CoverletOutputFormat=opencover
+
+      # Upload coverage to Codecov
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: coverage/coverage.opencover.xml
+          fail_ci_if_error: true
