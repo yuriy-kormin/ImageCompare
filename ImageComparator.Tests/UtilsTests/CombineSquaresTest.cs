@@ -47,6 +47,18 @@ public class CombineSquaresTest
         //   5|          |
         //    +----------+
 
+        CombineSquares.AddOrExtend(4,4,5,5);
+        Assert.That(CombineSquares.Squares.Count, Is.EqualTo(2));
+        Assert.That(CombineSquares.Squares[0], Is.EqualTo((1,1,3,3)));
+        Assert.That(CombineSquares.Squares[1], Is.EqualTo((4,4,5,5)));
+        //   +_1_2_3_4_5_+
+        //   1| __       |
+        //   2||  |      |   
+        //   3||__|      |   1 square (1.1,3.3)
+        //   4|        _ |                        => 2 squares (1.1,3.3), (4.4,5.5)
+        //   5|       |_||   1 square (4.4,5.5)
+        //    +----------+
+
     }
     
 }
