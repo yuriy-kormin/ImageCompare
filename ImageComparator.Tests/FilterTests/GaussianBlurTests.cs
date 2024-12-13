@@ -10,9 +10,9 @@ public class GaussianBlurTests
     [Test]
     public void ApplyGaussianBlur_ShouldBlurImage_WhenValidInput()
     {
-        using var bitmap = BitmapFixture.CreateSolidColorBitmap(10, 10, Color.Blue);
+        using var bitmap = BitmapFixture.CreateSolidColorBitmap(20, 20, Color.Blue);
 
-        GaussBlur.ApplyGaussianBlur(bitmap, 2.0);
+        GaussBlur.ApplyGaussianBlur(bitmap, 2.0f);
 
         // Assert
         var originalColor = Color.Blue;

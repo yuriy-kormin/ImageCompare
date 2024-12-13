@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <NoWarn>CA1416</NoWarn>
         <IsPackable>false</IsPackable>
         <RuntimeIdentifiers>linux-x64;osx-x64</RuntimeIdentifiers>
     </PropertyGroup>
