@@ -5,18 +5,15 @@ namespace ImageComparator.Tests.FilterTests;
 
 public class GaussianBlurTests
 {
-    private Bitmap _bitmap { get; }=BitmapFixture.CreateSolidColorBitmap(10, 10, Color.Blue);
+    private Bitmap _bitmap { get; }=BitmapFixture.CreateSolidColorBitmap(20, 20, Color.Blue);
     
     [Test]
     public void ApplyGaussianBlur_ShouldBlurImage_WhenValidInput()
     {
-        using var bitmap = BitmapFixture.CreateSolidColorBitmap(20, 20, Color.Blue);
+        GaussBlur.ApplyGaussianBlur(_bitmap, 2.0f);
 
-        GaussBlur.ApplyGaussianBlur(bitmap, 2.0f);
-
-        // Assert
         var originalColor = Color.Blue;
-        var blurredColor = BitmapFixture.GetPixelColor(bitmap, bitmap.Width / 2, bitmap.Height / 2);
+        var blurredColor = BitmapFixture.GetPixelColor(_bitmap, _bitmap.Width / 2, _bitmap.Height / 2);
         Assert.AreNotEqual(originalColor, blurredColor, "The Gaussian blur should modify the center pixel.");
     }
 }
