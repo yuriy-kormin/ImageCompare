@@ -1,0 +1,2 @@
+[![CI](https://github.com/yuriy-kormin/ImageCompare/actions/workflows/ci.yml/badge.svg)](https://github.com/yuriy-kormin/ImageCompare/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/yuriy-kormin/ImageCompare/graph/badge.svg?token=45FLY0KKSY)](https://codecov.io/gh/yuriy-kormin/ImageCompare)
