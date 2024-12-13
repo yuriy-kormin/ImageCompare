@@ -2,28 +2,25 @@ namespace ImageComparator.Tests;
 using ImageComparator;
 public class EntryPointTests
 {
-    // [SetUp]
-    // public void Setup()
-    // {
-    // }
-
     [Test]
     public void TestSettingsDefaule()
     {
-        Assert.AreEqual(Settings.squareSize, 15);
-        Assert.AreEqual(Settings.PixelCounterPercentageThreshold, 20);
-        Assert.AreEqual(Settings.GaussianSigma, 2.0f);
+        Assert.That(Settings.squareSize, Is.EqualTo(15));
+        Assert.That(Settings.PixelCounterPercentageThreshold, Is.EqualTo(20));
+        Assert.That(Settings.GaussianSigma, Is.EqualTo(2.0f));
+
+        Assert.That(Settings.PixelBrightPercentageThreshold, Is.EqualTo(10));
+        Assert.That(Settings.DiffCount, Is.EqualTo(-1));
         
-        Assert.AreEqual(Settings.PixelBrightPercentageThreshold, 10);
-        Assert.AreEqual(Settings.DiffCount, -1);
 
         Settings.PixelBrightPercentageThreshold = 44;
         Settings.DiffCount = 44;
-        Assert.AreEqual(Settings.PixelBrightPercentageThreshold, 44);
-        Assert.AreEqual(Settings.DiffCount, 44);
-        
-        Assert.AreEqual(Settings.squareSize, 15);
-        Assert.AreEqual(Settings.PixelCounterPercentageThreshold, 20);
-        Assert.AreEqual(Settings.GaussianSigma, 2.0f);
+        Assert.That(Settings.PixelBrightPercentageThreshold, Is.EqualTo(44));
+        Assert.That(Settings.DiffCount, Is.EqualTo(44));
+
+        Assert.That(Settings.squareSize, Is.EqualTo(15));
+        Assert.That(Settings.PixelCounterPercentageThreshold, Is.EqualTo(20));
+        Assert.That(Settings.GaussianSigma, Is.EqualTo(2.0f));
+
     }
 }
