@@ -9,29 +9,22 @@ namespace ImageComparator.Utils
     
         public static void AddOrExtend(int x1, int y1, int x2, int y2)
         {
-            var horizontalConnect = Squares.FirstOrDefault(es => es.x2 == x1 && es.y1 <= y1 && es.y2 >= y2);
-            var verticalConnect = Squares.FirstOrDefault(es => es.y2 ==y1 && es.x1 <= x1 && es.x2 >= x2);
-
-            if (horizontalConnect == default && verticalConnect == default)
+            var touchingSquares = Squares.Where(s => 
+                    s.x2 >= x1 && s.x1 <= x2 
+                    && s.y2 >= y1 && s.y1 <= y2 
+            ).ToList();
+            
+            if (touchingSquares.Any())
             {
-                Squares.Add((x1, y1, x2, y2));
-                return;
-            }
-            if (horizontalConnect != default)
-            {
-                x1=horizontalConnect.x1;
-                y1=horizontalConnect.y1;
-                y2 = Math.Max(horizontalConnect.y2, y2);
-                Squares.Remove(horizontalConnect);
-            }
-            else if (verticalConnect != default)
-            {
-                x1 = Math.Min(x1, verticalConnect.x1);
-                y1 = verticalConnect.y1;
-                x2 = Math.Max(x2, horizontalConnect.x2);
-                Squares.Remove(verticalConnect);
+                x1 = Math.Min(x1, touchingSquares.Min(s => s.x1));
+                y1 = Math.Min(y1, touchingSquares.Min(s => s.y1));
+                x2 = Math.Max(x2, touchingSquares.Max(s => s.x2));
+                y2 = Math.Max(y2, touchingSquares.Max(s => s.y2));
+            
+                Squares.RemoveAll(s => touchingSquares.Contains(s));
             }
             Squares.Add((x1, y1, x2, y2));
+            
         }
     }    
 }
