@@ -28,9 +28,9 @@ namespace ImageCompareCLI
                 Settings.PixelBrightPercentageThreshold = threadshold;
                 Settings.DiffCount = diffcount;
                 
-                var bitmapResult = Comparator.ImageCompare( bitmap1, bitmap2, bitmap3);
-                bitmapResult.Save(ArgParser.OutputFilename);
-                bitmapResult.Dispose();
+                Comparator.ImageCompare( bitmap1, bitmap2, bitmap3);
+                bitmap3.Save(ArgParser.OutputFilename);
+                bitmap3.Dispose();
                 ConsolePrint.PrintSuccess($"Output file saved to {ArgParser.OutputFilename}");
             }
         

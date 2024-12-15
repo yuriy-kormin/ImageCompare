@@ -7,6 +7,7 @@ namespace ImageComparator
 {
     public class Settings
     {
+        public static bool Debug { get; } = true;
         public static int squareSize { get; } = 15;
         public static int PixelCounterPercentageThreshold { get; } = 20;
         public static double GaussianSigma { get; } = 2.0f;
@@ -16,12 +17,17 @@ namespace ImageComparator
 
     public class Comparator
     {
-        public static Bitmap ImageCompare(Bitmap bitmap1, Bitmap bitmap2, Bitmap bitmapResult)
+        // public static  Bitmap _result { get; private set; }
+        // public static int progressPercentage { get; private set; } = 0;
+
+        public static void ImageCompare(Bitmap bitmap1, Bitmap bitmap2, Bitmap bitmapResult)
         {
             InputDataValidator.CheckSameDimensions(bitmap1, bitmap2);
+            
             int width = bitmap1.Width;
             int height = bitmap1.Height;
-
+            // _result = bitmap2.Clone(new Rectangle(0, 0, width, height), bitmap1.PixelFormat);
+            
             // var bitmapResult = new Bitmap(bitmap2, bitmap2.Width,bitmap2.Height);
             // var bitmapResult = new Bitmap(bitmap2, width, height);
             
@@ -32,7 +38,7 @@ namespace ImageComparator
 
             BitmapData? bitmapData1 = null;
             BitmapData? bitmapData2 = null;
-            BitmapData? bitmapDataResult = null;
+            // BitmapData? bitmapDataResult = null;
             
             
             try
@@ -40,11 +46,11 @@ namespace ImageComparator
                 
                 bitmapData1 = BitmapLockBits.Lock(bitmap1, ImageLockMode.ReadOnly);
                 bitmapData2 = BitmapLockBits.Lock(bitmap2, ImageLockMode.ReadOnly);
-                bitmapDataResult = BitmapLockBits.Lock(bitmapResult, ImageLockMode.WriteOnly);
+                // bitmapDataResult = BitmapLockBits.Lock(bitmapResult, ImageLockMode.WriteOnly);
 
                 unsafe
                 {
-                    byte* resultPtr = (byte*)bitmapDataResult.Scan0;
+                    // byte* resultPtr = (byte*)bitmapDataResult.Scan0;
 
                     // Iterate through squares
                     for (int y = 0; y < height; y += Settings.squareSize)
@@ -57,17 +63,20 @@ namespace ImageComparator
 
                             if (!ComparingMethods.IsSquareMatch(x, y, bitmapData1, bitmapData2, squareRect))
                             {
-                                // DrawRectangles.DrawBorder(resultPtr, x, y, currentSquareWidth, currentSquareHeight, bitmapDataResult.Stride, 3);
+                                if (Settings.Debug)
+                                {
+                                    DrawRectangles.DrawBorder(bitmapResult, x+3, y+3, currentSquareWidth-6, currentSquareHeight-6, new List<int>(){0,0,0});
+                                }
                                 CombineSquares.AddOrExtend(x, y, x + currentSquareWidth, y + currentSquareHeight);
                             }
                         }
                     }
 
-                    foreach (var square in CombineSquares.Squares)
-                    {
-                        DrawRectangles.DrawBorder(resultPtr, square.x1, square.y1, square.x2 - square.x1,
-                            square.y2 - square.y1, bitmapDataResult.Stride, 3);
-                    }
+                foreach (var square in CombineSquares.Squares)
+                {
+                    DrawRectangles.DrawBorder(bitmapResult, square.x1, square.y1, square.x2 - square.x1,
+                        square.y2 - square.y1);
+                }
                 }
 
             }
@@ -83,13 +92,13 @@ namespace ImageComparator
                     bitmap2.UnlockBits(bitmapData2);
                 }
 
-                if (bitmapDataResult != null)
-                {
-                    bitmapResult.UnlockBits(bitmapDataResult);
-                }
+                // if (bitmapDataResult != null)
+                // {
+                //     bitmapResult.UnlockBits(bitmapDataResult);
+                // }
             }
 
-            return bitmapResult;
+            // return bitmapResult;
         }
     }
 
