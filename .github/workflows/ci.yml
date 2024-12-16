@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -16,10 +12,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Install libgdiplus
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgdiplus
+      
       - name: Set up .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '6.0' 
+          dotnet-version: '6.0'
+#        run: dotnet build ImageComparator
 
       - name: Install dependencies
         run: dotnet restore
