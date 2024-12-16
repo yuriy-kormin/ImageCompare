@@ -1,6 +1,5 @@
-﻿using System.Drawing;
-using ImageCompareCLI.Utils;
-using ImageComparator;
+﻿using ImageCompareCLI.Utils;
+
 
 namespace ImageCompareCLI
 {
@@ -8,32 +7,18 @@ namespace ImageCompareCLI
     {
         public static void Main(string[] args)
         {
-        
-            ArgParser.Parse(args);
-        
-            if (!ArgValidator.IsArgValid())
+            try
             {
-                ConsolePrint.PrintError("\t Invalid arguments.Break execution....");
-                ConsolePrint.ShowUsage();
-                return;
+                ArgParser.Parse(args);
+                SettingsUpdater.Update();
             }
-        
-            using(Bitmap bitmap1 = new Bitmap(ArgParser.Args["--file1"]))
-            using(Bitmap bitmap2 = new Bitmap(ArgParser.Args["--file2"]))
-            using(Bitmap bitmap3 = new Bitmap(ArgParser.Args["--file2"]))
+            catch (ArgumentException ex)
             {
-                int threadshold = int.Parse(ArgParser.Args["--threshold"]);
-                int diffcount = int.Parse(ArgParser.Args["--diffcount"]);
-                
-                Settings.PixelBrightPercentageThreshold = threadshold;
-                Settings.DiffCount = diffcount;
-                
-                Comparator.ImageCompare( bitmap1, bitmap2, bitmap3);
-                bitmap3.Save(ArgParser.OutputFilename);
-                bitmap3.Dispose();
-                ConsolePrint.PrintSuccess($"Output file saved to {ArgParser.OutputFilename}");
+                Console.WriteLine(ex.Message);
+                Environment.Exit(1);
             }
-        
+            
+            DiffProcessor.Run();
         }
     }    
 }
