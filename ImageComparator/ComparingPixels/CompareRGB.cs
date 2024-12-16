@@ -18,7 +18,7 @@ namespace ImageComparator.ComparingPixels
             double brightness2 = 0.299 * ptr2[2] + 0.587 * ptr2[1] + 0.114 * ptr2[0];
 
 
-            var diff = (double)Math.Abs(brightness1 - brightness2)*0.392156;
+            var diff = ((double)Math.Abs(brightness1 - brightness2)/255)*100;
             return diff < (double)Settings.PixelBrightPercentageThreshold;
         }
     }    
