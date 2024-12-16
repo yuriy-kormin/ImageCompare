@@ -58,8 +58,72 @@ The CLI utility accepts the following parameters. If not provided, default value
      -1 (default) means no limit.
 ```
 
+## ImageComparer interface overview
 
 
+### Overview
+The `ImageComparator` library is a .NET DLL designed for pixel-by-pixel image comparison. It accepts three bitmap images as inputs:
+1. **Image 1:** First image to compare.
+2. **Image 2:** Second image to compare.
+3. **Result Image:** Output image to visualize the differences.
 
+
+## Parameters
+The main parameters for `ImageComparator` can be configured via the `Settings` class. These parameters are:
+
+### Debugging Settings
+- **`Debug`** (`bool`):
+  - Default: `true`
+  - Enables or disables debug mode.
+
+- **`DebugRectShiftPX`** (`int`):
+  - Default: `3`
+  - Number of pixels to shift the debug rectangles.
+
+- **`DebugRectColor`** (`List<int>`):
+  - Default: `[0, 0, 0]` (Black color)
+  - RGB color values for the debug rectangles.
+
+### Comparison Settings
+- **`applyGaussianBlur`** (`bool`):
+  - Default: `false`
+  - Applies Gaussian blur to images before comparison.
+
+- **`squareSize`** (`int`):
+  - Default: `15`
+  - Size of the square blocks used in the comparison process.
+
+- **`PixelCounterPercentageThreshold`** (`int`):
+  - Default: `20`
+  - Percentage threshold for considering pixel blocks as different.
+
+- **`GaussianSigma`** (`double`):
+  - Default: `2.0`
+  - Sigma value for Gaussian blur.
+
+- **`PixelBrightPercentageThreshold`** (`int`):
+  - Default: `10`
+  - Threshold for brightness differences. This value can be overridden by CLI input.
+
+- **`DiffCount`** (`int`):
+  - Default: `-1`
+  - Number of detected differences. This value can be overridden by CLI input.
+
+### Additional Settings
+- **`GrayScaleCompare`** (`bool`):
+  - Currently commented out in the source code.
+  - Intended for grayscale comparison. Future support may be added.
+
+
+```csharp
+using ImageComparator;
+
+Settings.applyGaussianBlur = true;
+Settings.squareSize = 10;
+Settings.PixelCounterPercentageThreshold = 15;
+
+// Perform comparison
+ImageComparator.Compare(image1, image2, resultImage);
+```
 
 
