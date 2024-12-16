@@ -43,8 +43,3 @@ ScaffoldingReadMe.txt
 
 # Coverage files
 *coverage/ 
-
-# Project-specific
-*.jpg
-!tesspics/
-tesspics/*.jpg
