@@ -46,3 +46,5 @@ ScaffoldingReadMe.txt
 
 # Project-specific
 *.jpg
+!tesspics/
+tesspics/*.jpg
