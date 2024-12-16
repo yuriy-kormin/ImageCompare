@@ -9,15 +9,15 @@ namespace ImageComparator.Utils
         private static Func<int, int, BitmapData, BitmapData, bool> IsPixelMatch { get; set; } =
             CompareRGB.IsPixelMatch;
 
-        public static unsafe bool IsSquareMatch(int x, int y, BitmapData bitmapData1, BitmapData bitmapData2, Rectangle squareRect)
+        public static unsafe bool IsSquareMatch(BitmapData bitmapData1, BitmapData bitmapData2, Rectangle squareRect)
         {
             int differenceCounter = 0;
             for (int j = 0; j < squareRect.Height; j++)
             {
                 for (int i = 0; i < squareRect.Width; i++)
                 {
-                    int pixelX = x + i;
-                    int pixelY = y + j;
+                    int pixelX = squareRect.X + i;
+                    int pixelY = squareRect.Y + j;
 
                     if (!IsPixelMatch(pixelX, pixelY, bitmapData1, bitmapData2))
                     {
