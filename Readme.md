@@ -18,19 +18,6 @@ to smooth differences and equalize pixel intensities.
 - ##### Result Visualization:
     After detecting differences, red rectangles are drawn on the images to visually highlight the areas of discrepancy.
 
-## Realization Approach
-The library uses unsafe methods to directly access pixel data, 
-ensuring efficient manipulation of bitmap data. 
-Images are preprocessed with a Gaussian Blur filter to reduce noise and enhance 
-meaningful differences.
-
-During comparison, a threshold mechanism determines whether pixel differences within 
-a square are significant enough to count.
-
-Detected squares are either merged with existing ones or added as new entities to the list. 
-
-After processing, the library iterates through the list to overlay red rectangles on the original images, marking the detected areas.
-
 
 ## CLI Usage Parameters
 The CLI utility accepts the following parameters. If not provided, default values are used:
@@ -58,7 +45,7 @@ The CLI utility accepts the following parameters. If not provided, default value
      -1 (default) means no limit.
 ```
 
-## ImageComparer interface overview
+## ImageComparator DLL
 
 
 ### Overview
@@ -66,6 +53,20 @@ The `ImageComparator` library is a .NET DLL designed for pixel-by-pixel image co
 1. **Image 1:** First image to compare.
 2. **Image 2:** Second image to compare.
 3. **Result Image:** Output image to visualize the differences.
+
+### Realization Approach
+The library uses unsafe methods to directly access pixel data,
+ensuring efficient manipulation of bitmap data.
+Images are preprocessed with a Gaussian Blur filter to reduce noise and enhance
+meaningful differences.(can be disable in `Settings` module for faster processing)
+
+During comparison, a threshold mechanism determines whether pixel differences within
+a square are significant enough to count.
+
+Detected squares are either merged with existing ones or added as new entities to the list.
+
+After processing, the library iterates through the list to overlay red rectangles on the original images, marking the detected areas.
+
 
 
 ## Parameters
