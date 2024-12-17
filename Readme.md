@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/541b8dd316904b8caaa7a7b35e3a9439)](https://app.codacy.com/gh/yuriy-kormin/ImageCompare?utm_source=github.com&utm_medium=referral&utm_content=yuriy-kormin/ImageCompare&utm_campaign=Badge_Grade)
 [![CI](https://github.com/yuriy-kormin/ImageCompare/actions/workflows/ci.yml/badge.svg)](https://github.com/yuriy-kormin/ImageCompare/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/yuriy-kormin/ImageCompare/graph/badge.svg?token=45FLY0KKSY)](https://codecov.io/gh/yuriy-kormin/ImageCompare)
 
