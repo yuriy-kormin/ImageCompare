@@ -2,14 +2,36 @@ using System.Drawing;
 using ImageComparator;
 // using System.Threading;
 
-
 namespace ImageCompareCLI.Utils
 {
-    
-
+    /// <summary>
+    /// Processes the image comparison and manages progress display in the console.
+    /// </summary>
     public class DiffProcessor
     {
-        private const int ProgressUpdateIntervalMs = 10; // Update progress every  ms
+        /// <summary>
+        /// Interval in milliseconds for updating progress on the console.
+        /// </summary>
+        private const int ProgressUpdateIntervalMs = 10; // Update progress every ms
+
+        /// <summary>
+        /// Executes the image comparison process.
+        /// </summary>
+        /// <remarks>
+        /// This method loads the input images, starts a progress display thread, 
+        /// performs the image comparison using the <see cref="Comparator.ImageCompare"/> method,
+        /// and saves the resulting output file to the specified location.
+        /// </remarks>
+        /// <exception cref="System.IO.FileNotFoundException">
+        /// Thrown if the specified input files do not exist.
+        /// </exception>
+        /// <example>
+        /// <code>
+        /// DiffProcessor.Run();
+        /// </code>
+        /// Output:
+        /// ✔ Output file saved to output.jpg
+        /// </example>
         public static void Run()
         {
             using(Bitmap bitmap1 = new Bitmap(ArgParser.Args["--file1"]))
@@ -25,6 +47,12 @@ namespace ImageCompareCLI.Utils
             }
         }
 
+        /// <summary>
+        /// Creates and starts a background thread to display the progress of the image comparison.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="Thread"/> object responsible for updating the progress in the console.
+        /// </returns>
         private static Thread ConsoleProgress()
         {
             return new Thread(() =>
@@ -38,6 +66,11 @@ namespace ImageCompareCLI.Utils
                 Console.WriteLine("\n");
             });
         }
+
+        /// <summary>
+        /// Updates the console with the current progress of the image comparison.
+        /// </summary>
+        /// <param name="progress">The current progress percentage (0-100).</param>
         private static void UpdateConsoleProgress(int progress)
         {
             lock (Console.Out)
@@ -48,4 +81,3 @@ namespace ImageCompareCLI.Utils
         }
     }
 }
-

@@ -72,23 +72,26 @@ namespace ImageComparator
 
                             if (!ComparingMethods.IsSquareMatch(x, y, bitmapData1, bitmapData2, squareRect))
                             {
+                                CombineSquares.AddOrExtend(x, y, x + currentSquareWidth, y + currentSquareHeight);
+                                if (CombineSquares.Squares.Count > Settings.DiffCount)
+                                {
+                                    Progress = 100;
+                                    break; 
+                                }
+                                
                                 if (Settings.Debug)
                                 {
                                     DrawRectangles.DrawBorder(bitmapResult, squareRect,debug:true);
                                 }
-                                CombineSquares.AddOrExtend(x, y, x + currentSquareWidth, y + currentSquareHeight);
                             }
 
                             processedSquares++;
                             Progress = (int)((processedSquares / (double)totalSquares) * 100);
-                            if (CombineSquares.Squares.Count > Settings.DiffCount)
-                            {
-                                break; 
-                            }
+                            
                         }
                         if (CombineSquares.Squares.Count > Settings.DiffCount)
                         {
-                            Progress = 100;
+                            
                             break;
                         }
                     }
