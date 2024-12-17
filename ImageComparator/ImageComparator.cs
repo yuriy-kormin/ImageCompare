@@ -51,6 +51,7 @@ namespace ImageComparator
             if (Settings.DiffCount == -1)
             {
                 Settings.DiffCount = totalSquares;
+                // Max number of diffcount can be found is a total squares. Skip check if diffcount==-1...
             }
             
             try
