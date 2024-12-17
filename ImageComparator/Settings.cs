@@ -30,7 +30,7 @@ public class Settings
     /// <summary>
     /// Determines whether to apply Gaussian blur to the images before comparison.
     /// </summary>
-    public static bool applyGaussianBlur { get; } = false;
+    public static bool applyGaussianBlur { get; } = true;
 
     /// <summary>
     /// Size of the square regions to compare in pixels.
