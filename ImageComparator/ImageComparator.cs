@@ -1,30 +1,46 @@
-﻿using System.Diagnostics;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using ImageComparator.Utils;
 using ImageComparator.Filters;
 
 namespace ImageComparator
 {
-    public class Settings
-    {
-        public static bool Debug { get; } = true;
-        public static int DebugRectShiftPX { get; } = 3;
-        public static Color DebugRectColor { get; } = Color.Black;
-        public static Color RectColor { get; } = Color.Red;
-        
-        public static bool applyGaussianBlur { get; } = false;
-        // public static bool GrayScaleCompare { get; } = false;
-        public static int squareSize { get; } = 15;
-        public static int PixelCounterPercentageThreshold { get; } = 20;
-        public static double GaussianSigma { get; } = 2.0f;
-        public static int PixelBrightPercentageThreshold { get; set; } = 10; // overwritten by input theadshold
-        public static int DiffCount { get; set; } = -1; // overwritten by input theadshold
-    }
-
+    /// <summary>
+    /// Performs image comparison operations and tracks the progress of the comparison.
+    /// </summary>
     public class Comparator
     {
+        /// <summary>
+        /// Tracks the progress of the image comparison operation, as a percentage (0-100).
+        /// </summary>
         public static int Progress { get; private set; } = 0;
+
+        /// <summary>
+        /// Compares two bitmap images, detects differing regions, and outputs a result image.
+        /// </summary>
+        /// <param name="bitmap1">The first bitmap image to compare.</param>
+        /// <param name="bitmap2">The second bitmap image to compare.</param>
+        /// <param name="bitmapResult">
+        /// A bitmap where the resulting image with highlighted differences will be drawn.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// Thrown if the input images do not have the same dimensions.
+        /// </exception>
+        /// <remarks>
+        /// The comparison works by dividing the images into square regions of size defined in 
+        /// <see cref="Settings.squareSize"/>. It then compares these regions pixel by pixel to 
+        /// identify differences. If the differences exceed <see cref="Settings.DiffCount"/>, 
+        /// the comparison terminates early.
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// using Bitmap bitmap1 = new Bitmap("image1.jpg");
+        /// using Bitmap bitmap2 = new Bitmap("image2.jpg");
+        /// using Bitmap result = new Bitmap(bitmap1.Width, bitmap1.Height);
+        /// Comparator.ImageCompare(bitmap1, bitmap2, result);
+        /// result.Save("result.jpg");
+        /// </code>
+        /// </example>
         public static void ImageCompare(Bitmap bitmap1, Bitmap bitmap2, Bitmap bitmapResult)
         {
             InputDataValidator.CheckSameDimensions(bitmap1, bitmap2);
@@ -38,7 +54,6 @@ namespace ImageComparator
                 {
                     GaussBlur.ApplyGaussianBlur(bm, Settings.GaussianSigma);
                 }
-    
             }
             
             BitmapData? bitmapData1 = null;
@@ -51,12 +66,10 @@ namespace ImageComparator
             if (Settings.DiffCount == -1)
             {
                 Settings.DiffCount = totalSquares;
-                // Max number of diffcount can be found is a total squares. Skip check if diffcount==-1...
             }
             
             try
             {
-                
                 bitmapData1 = BitmapLockBits.Lock(bitmap1, ImageLockMode.ReadOnly);
                 bitmapData2 = BitmapLockBits.Lock(bitmap2, ImageLockMode.ReadOnly);
 
@@ -81,17 +94,16 @@ namespace ImageComparator
                                 
                                 if (Settings.Debug)
                                 {
-                                    DrawRectangles.DrawBorder(bitmapResult, squareRect,debug:true);
+                                    DrawRectangles.DrawBorder(bitmapResult, squareRect, debug: true);
                                 }
                             }
 
                             processedSquares++;
                             Progress = (int)((processedSquares / (double)totalSquares) * 100);
-                            
                         }
+
                         if (CombineSquares.Squares.Count > Settings.DiffCount)
                         {
-                            
                             break;
                         }
                     }
@@ -105,7 +117,6 @@ namespace ImageComparator
                         DrawRectangles.DrawBorder(bitmapResult, squareRect);
                     }
                 }
-
             }
             finally
             {
@@ -118,10 +129,7 @@ namespace ImageComparator
                 {
                     bitmap2.UnlockBits(bitmapData2);
                 }
-
             }
         }
     }
 }
-
-
