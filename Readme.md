@@ -18,6 +18,16 @@ to smooth differences and equalize pixel intensities.
 - ##### Result Visualization:
     After detecting differences, red rectangles are drawn on the images to visually highlight the areas of discrepancy.
 
+### Examples
+**file1.jpg**![file1](ImageCompareCLI/1.jpg)
+**file2.jpg**![file1](ImageCompareCLI/2.jpg)
+---
+
+**Result of processing**![result1](ImageCompareCLI/testpics/output.jpg)
+**Result of processing with DEBUG=true**
+![result1](ImageCompareCLI/testpics/output-d.jpg)
+
+
 
 ## CLI Usage Parameters
 The CLI utility accepts the following parameters. If not provided, default values are used:

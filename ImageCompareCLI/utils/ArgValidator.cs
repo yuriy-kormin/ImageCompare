@@ -16,7 +16,8 @@ namespace ImageCompareCLI.Utils
         /// The validation checks include:
         /// <list type="bullet">
         /// <item>
-        /// <description>Ensuring the files specified by <c>--file1</c> and <c>--file2</c> exist on the file system.</description>
+        /// <description>Ensuring the files specified by <c>--file1</c> and <c>--file2</c> exist on the file system.
+        /// </description>
         /// </item>
         /// <item>
         /// <description>Validating that the <c>--threshold</c> value is between 0 and 100 (inclusive).</description>
@@ -58,7 +59,8 @@ namespace ImageCompareCLI.Utils
             {
                 if (diffcount < -1 || diffcount > 100)
                 {
-                    ConsolePrint.PrintError($"Warning: Diffcount '{diffcount}' is out of range.[-1 - 100] (-1 means 'without a threshold')");
+                    ConsolePrint.PrintError($"Warning: Diffcount '{diffcount}' is out of range.[-1 - 100]" +
+                                            $" (-1 means 'without a threshold')");
                     return false;
                 }
             }
