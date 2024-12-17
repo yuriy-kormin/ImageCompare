@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics;
+using System.Drawing;
 using System.Drawing.Imaging;
 using ImageComparator.Utils;
 using ImageComparator.Filters;
@@ -8,6 +9,10 @@ namespace ImageComparator
     public class Settings
     {
         public static bool Debug { get; } = true;
+        public static int DebugRectShiftPX { get; } = 3;
+        public static Color DebugRectColor { get; } = Color.Black;
+        public static Color RectColor { get; } = Color.Red;
+        
         public static bool applyGaussianBlur { get; } = false;
         // public static bool GrayScaleCompare { get; } = false;
         public static int squareSize { get; } = 15;
@@ -63,7 +68,7 @@ namespace ImageComparator
                             {
                                 if (Settings.Debug)
                                 {
-                                    DrawRectangles.DrawBorder(bitmapResult, x+3, y+3, currentSquareWidth-6, currentSquareHeight-6, new List<int>(){0,0,0});
+                                    DrawRectangles.DrawBorder(bitmapResult, squareRect,debug:true);
                                 }
                                 CombineSquares.AddOrExtend(x, y, x + currentSquareWidth, y + currentSquareHeight);
                             }
@@ -75,8 +80,9 @@ namespace ImageComparator
 
                 foreach (var square in CombineSquares.Squares)
                 {
-                    DrawRectangles.DrawBorder(bitmapResult, square.x1, square.y1, square.x2 - square.x1,
+                    Rectangle squareRect = new Rectangle(square.x1, square.y1, square.x2 - square.x1,
                         square.y2 - square.y1);
+                    DrawRectangles.DrawBorder(bitmapResult, squareRect);
                 }
                 }
 
