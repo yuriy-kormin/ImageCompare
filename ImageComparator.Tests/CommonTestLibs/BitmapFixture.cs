@@ -1,5 +1,6 @@
 using System.Drawing;
 using System.Drawing.Imaging;
+using ImageComparator.Utils;
 
 namespace ImageComparator.Tests
 {
@@ -53,6 +54,16 @@ namespace ImageComparator.Tests
             }
         }
 
-    }    
+        public static void DrawFillRectangle(Bitmap bitmap, int x, int y, int width, int height, Color color)
+        {
+            var rect = new Rectangle(x, y, width, height);
+            using (Graphics g = Graphics.FromImage(bitmap))
+            using (Brush brush = new SolidBrush(color))
+            {
+                g.FillRectangle(brush, x, y, width, height);
+            }
+        }
+    }
+    
 };
 
