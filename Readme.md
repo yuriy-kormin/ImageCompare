@@ -19,13 +19,19 @@ to smooth differences and equalize pixel intensities.
     After detecting differences, red rectangles are drawn on the images to visually highlight the areas of discrepancy.
 
 ### Examples
-**file1.jpg**![file1](ImageCompareCLI/1.jpg)
-**file2.jpg**![file1](ImageCompareCLI/2.jpg)
+
+![file1](docs/1.jpg)
+![file2](docs/2.jpg)
 ---
 
-**Result of processing**![result1](ImageCompareCLI/testpics/output.jpg)
+**Result of processing**
+
+![result1](docs/output.jpg)
+
+
 **Result of processing with DEBUG=true**
-![result1](ImageCompareCLI/testpics/output-d.jpg)
+
+![result1](docs/output-d.jpg)
 
 
 

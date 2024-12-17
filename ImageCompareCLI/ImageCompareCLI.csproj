@@ -4,6 +4,10 @@
       <ProjectReference Include="..\ImageComparator\ImageComparator.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="testpics\output-d.jpg" />
+    </ItemGroup>
+
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
