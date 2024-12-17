@@ -15,6 +15,7 @@ namespace ImageCompareCLI
             catch (ArgumentException ex)
             {
                 Console.WriteLine(ex.Message);
+                ConsolePrint.ShowUsage();
                 Environment.Exit(1);
             }
             

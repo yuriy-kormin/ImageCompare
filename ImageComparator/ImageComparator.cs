@@ -48,6 +48,11 @@ namespace ImageComparator
             int totalSquares = ((width + Settings.squareSize - 1) / Settings.squareSize) * 
                                ((height + Settings.squareSize - 1) / Settings.squareSize);
 
+            if (Settings.DiffCount == -1)
+            {
+                Settings.DiffCount = totalSquares;
+            }
+            
             try
             {
                 
@@ -75,15 +80,26 @@ namespace ImageComparator
 
                             processedSquares++;
                             Progress = (int)((processedSquares / (double)totalSquares) * 100);
+                            if (CombineSquares.Squares.Count > Settings.DiffCount)
+                            {
+                                break; 
+                            }
+                        }
+                        if (CombineSquares.Squares.Count > Settings.DiffCount)
+                        {
+                            Progress = 100;
+                            break;
                         }
                     }
 
-                foreach (var square in CombineSquares.Squares)
-                {
-                    Rectangle squareRect = new Rectangle(square.x1, square.y1, square.x2 - square.x1,
-                        square.y2 - square.y1);
-                    DrawRectangles.DrawBorder(bitmapResult, squareRect);
-                }
+                    var squares = CombineSquares.Squares.GetRange(0,
+                        Math.Min(Settings.DiffCount, CombineSquares.Squares.Count));
+                    foreach (var square in squares)
+                    {
+                        Rectangle squareRect = new Rectangle(square.x1, square.y1, square.x2 - square.x1,
+                            square.y2 - square.y1);
+                        DrawRectangles.DrawBorder(bitmapResult, squareRect);
+                    }
                 }
 
             }
@@ -102,7 +118,6 @@ namespace ImageComparator
             }
         }
     }
-
 }
 
 
