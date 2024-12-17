@@ -78,7 +78,6 @@ namespace ImageComparator
             BitmapData? bitmapData2 = null;
             try
             {
-
                 bitmapData1 = BitmapLockBits.Lock(Bitmap1, ImageLockMode.ReadOnly, rect);
                 bitmapData2 = BitmapLockBits.Lock(Bitmap2, ImageLockMode.ReadOnly, rect);
 
@@ -93,7 +92,7 @@ namespace ImageComparator
                             rect.Width-shiftPX*2, rect.Height-shiftPX*2, 
                             Settings.DebugRectColor );
                     }
-                    CombineSquares.AddOrExtend(rect.X, rect.Y, rect.X+rect.Width, rect.Y+rect.Height);
+                    CombineSquares.AddOrExtend(rect);
                 }
                 
             }
