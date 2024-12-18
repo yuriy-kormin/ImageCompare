@@ -12,7 +12,7 @@ public class InputDataValidatorTests
 
         // Act & Assert
         var ex = Assert.Throws<Exception>(() => InputDataValidator.CheckSameDimensions(bitmap1, bitmap2));
-        Assert.AreEqual("Bitmaps are different.", ex.Message); // Check if the exception message is correct
+        Assert.That("Bitmaps are different.", Is.EqualTo(ex.Message)); 
     }
 
     [Test]
@@ -24,7 +24,7 @@ public class InputDataValidatorTests
 
         // Act & Assert
         var ex = Assert.Throws<Exception>(() => InputDataValidator.CheckSameDimensions(bitmap1, bitmap2));
-        Assert.AreEqual("Bitmaps are different.", ex.Message); // Check if the exception message is correct
+        Assert.That("Bitmaps are different.", Is.EqualTo(ex.Message));
     }
 
     [Test]

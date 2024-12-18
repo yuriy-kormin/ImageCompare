@@ -14,6 +14,6 @@ public class GaussianBlurTests
 
         var originalColor = Color.Blue;
         var blurredColor = BitmapFixture.GetPixelColor(_bitmap, _bitmap.Width / 2, _bitmap.Height / 2);
-        Assert.AreNotEqual(originalColor, blurredColor, "The Gaussian blur should modify the center pixel.");
+        Assert.That(originalColor, Is.Not.EqualTo(blurredColor));
     }
 }
