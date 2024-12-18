@@ -144,4 +144,40 @@ Settings.PixelCounterPercentageThreshold = 15;
 ImageComparator.Compare(image1, image2, resultImage);
 ```
 
+## Improvements for the project
+
+#### 1. Detecting Color Scheme During Initialization
+- During the initialization of the library, implement functionality to determine the color scheme of the image.
+- Based on the detected scheme, override the color processing module in the property `ComparingMethods.IsPixelMatch`.
+- Currently, only the RGB24 handler is supported.
+
+#### 2. Revising Square Processing Logic
+- Modify the logic for processing image squares:
+  - Use `Bitmap.LockBits` only on the specific processing square rather than the entire area in both images.
+  - Consider using two-dimensional arrays with float data for pixel values to enable further processing.
+  - Apply filters (e.g., Gaussian or others) to the selected square.
+  - Compare squares using the chosen color processing module.
+
+#### 3. Redesign `CombineSquares.Squares`
+- Transform `CombineSquares.Squares` from an accumulator of detected square coordinates to an accumulator of rectangles (`Rectangles`).
+
+#### 4. Improve `CombineSquares.AddOrExtend`
+- Perform comparisons using built-in methods for rectangles from the .NET library: [System.Drawing.Rectangle Methods](https://learn.microsoft.com/en-us/dotnet/api/system.drawing.rectangle?view=net-6.0#methods).
+
+#### 5. Refactor `Comparator.ImageCompare`
+- Refactor `Comparator.ImageCompare` by splitting it into at least two methods to reduce nesting levels.
+- Move `BitmapLockBits.Lock` inside the loop to:
+  - Lock the relevant area.
+  - Process it (apply filters, comparisons).
+  - Unlock it after processing.
+
+#### 6. Instance-Based Methods for `Comparator.ImageCompare`
+- Refactor `Comparator.ImageCompare` to use instance-based methods instead of static methods.
+
+#### 7. Add Unit Tests
+- Add unit tests to cover edge cases and ensure robust functionality.
+
+#### 8. Draw Squares Immediately After Detection
+- Implement functionality to draw squares on the image immediately after detection.
+
 
