@@ -1,15 +1,16 @@
 namespace ImageCompareCLI.Utils
 {
     /// <summary>
-    /// Provides methods for printing formatted messages to the console, 
-    /// including errors, successes, and usage instructions.
+    /// Provides methods for printing formatted messages to the console, including errors, successes, and usage instructions.
     /// </summary>
     public class ConsolePrint
     {
         /// <summary>
         /// Prints an error message to the console in red with a '✘' prefix.
         /// </summary>
+        /// 
         /// <param name="error">The error message to display.</param>
+        ///
         /// <example>
         /// <code>
         /// ConsolePrint.PrintError("File not found.");
@@ -25,7 +26,9 @@ namespace ImageCompareCLI.Utils
         /// <summary>
         /// Prints a success message to the console in green with a '✔' prefix.
         /// </summary>
+        ///
         /// <param name="message">The success message to display.</param>
+        ///
         /// <example>
         /// <code>
         /// ConsolePrint.PrintSuccess("File processed successfully.");
@@ -38,14 +41,12 @@ namespace ImageCompareCLI.Utils
             Console.WriteLine($"\x1b[32m\u2714\x1b[0m {message}");
         }
 
-        /// <summary>
-        /// Displays usage instructions for the command-line arguments 
-        /// expected by the application.
-        /// </summary>
+        /// <summary>Displays usage instructions for the command-line arguments expected by the application. </summary>
+        ///
         /// <remarks>
-        /// The usage instructions include the list of required arguments 
-        /// and their expected values.
+        /// The usage instructions include the list of required arguments and their expected values.
         /// </remarks>
+        /// 
         /// <example>
         /// <code>
         /// ConsolePrint.ShowUsage();

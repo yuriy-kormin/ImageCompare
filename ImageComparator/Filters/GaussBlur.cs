@@ -4,23 +4,20 @@ using ImageComparator.Utils;
 
 namespace ImageComparator.Filters
 {
-    /// <summary>
-    /// Class to apply Gaussian Blur on a Bitmap image using a Gaussian kernel.
-    /// </summary>
+    /// <summary>Class to apply Gaussian Blur on a Bitmap image using a Gaussian kernel.</summary>
     public static class GaussBlur
     {
         /// <summary>
         /// Applies a Gaussian blur to the provided Bitmap image.
         /// </summary>
+        /// 
         /// <param name="sourceBitmap">The source Bitmap image to blur.</param>
         /// <param name="sigma">The standard deviation (sigma) for the Gaussian distribution.</param>
         public static void ApplyGaussianBlur(Bitmap sourceBitmap, double sigma)
         {
-            // Generate Gaussian kernel
             double[,] kernel = CreateGaussianKernel(sigma, out int kernelSize);
             int offset = kernelSize / 2;
 
-            // Lock bitmap data for in-place modification
             Rectangle rect = new Rectangle(0, 0, sourceBitmap.Width, sourceBitmap.Height);
             BitmapData? sourceData = null;
 
@@ -56,6 +53,7 @@ namespace ImageComparator.Filters
         /// <summary>
         /// Applies the Gaussian kernel to a specific pixel in the image.
         /// </summary>
+        /// 
         /// <param name="tempBuffer">A temporary buffer containing the image pixel data.</param>
         /// <param name="outputPtr">Pointer to the output pixel data.</param>
         /// <param name="stride">The stride (width in bytes) of the image data.</param>
@@ -97,6 +95,7 @@ namespace ImageComparator.Filters
         /// <summary>
         /// Creates a Gaussian kernel matrix based on the provided sigma.
         /// </summary>
+        /// 
         /// <param name="sigma">The standard deviation (sigma) for the Gaussian distribution.</param>
         /// <param name="size">Outputs the size of the Gaussian kernel.</param>
         /// <returns>A 2D Gaussian kernel as a double array.</returns>

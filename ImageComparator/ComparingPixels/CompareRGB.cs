@@ -11,10 +11,12 @@ namespace ImageComparator.ComparingPixels
         /// Compares the pixel values of two images at the specified (x, y) coordinates.
         /// The comparison is based on the perceived brightness of the pixels.
         /// </summary>
+        /// 
         /// <param name="x">The x-coordinate of the pixel to compare.</param>
         /// <param name="y">The y-coordinate of the pixel to compare.</param>
         /// <param name="bitmapData1">The <see cref="BitmapData"/> object of the first image.</param>
         /// <param name="bitmapData2">The <see cref="BitmapData"/> object of the second image.</param>
+        /// 
         /// <returns>
         /// Returns a boolean indicating whether the brightness difference between the two pixels is within the threshold defined in <see cref="Settings.PixelBrightPercentageThreshold"/>.
         /// </returns>

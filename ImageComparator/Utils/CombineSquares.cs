@@ -14,13 +14,16 @@ namespace ImageComparator.Utils
         /// <summary>
         /// Adds a new square or extends an existing one if the given square overlaps or touches any existing square.
         /// </summary>
+        /// 
         /// <param name="x1">The x-coordinate of the top-left corner of the square.</param>
         /// <param name="y1">The y-coordinate of the top-left corner of the square.</param>
         /// <param name="x2">The x-coordinate of the bottom-right corner of the square.</param>
         /// <param name="y2">The y-coordinate of the bottom-right corner of the square.</param>
+        /// 
         /// <remarks>
         /// This method checks if the given square overlaps or touches any existing squares in the list.
         /// If there are any such squares, they will be combined into one larger square and added back to the list.
+        ///
         /// If no such squares are found, the given square will simply be added to the list.
         /// </remarks>
         public static void AddOrExtend(int x1, int y1, int x2, int y2)

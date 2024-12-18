@@ -4,25 +4,23 @@ using ImageComparator.ComparingPixels;
 
 namespace ImageComparator.Utils
 {
-    /// <summary>
-    /// A utility class that provides methods for comparing pixels in images.
-    /// </summary>
+    /// <summary>A utility class that provides methods for comparing pixels in images.</summary>
     public static class ComparingMethods
     {
-        /// <summary>
-        /// A function to compare pixels. The default comparison method is RGB-based.
-        /// </summary>
+        /// <summary>A function to compare pixels. The default comparison method is RGB-based.</summary>
         private static Func<int, int, BitmapData, BitmapData, bool> IsPixelMatch { get; set; } =
             CompareRGB.IsPixelMatch;
 
         /// <summary>
         /// Compares a rectangular area (square) in two images to check if the difference in pixels is within a threshold.
         /// </summary>
+        /// 
         /// <param name="x">The x-coordinate of the top-left corner of the square in the first image.</param>
         /// <param name="y">The y-coordinate of the top-left corner of the square in the first image.</param>
         /// <param name="bitmapData1">The first bitmap's data to compare.</param>
         /// <param name="bitmapData2">The second bitmap's data to compare.</param>
         /// <param name="squareRect">The rectangle defining the square area to compare.</param>
+        ///
         /// <returns>Returns true if the percentage of pixel differences is within the allowed threshold; otherwise, false.</returns>
         public static unsafe bool IsSquareMatch(int x, int y, BitmapData bitmapData1, BitmapData bitmapData2, Rectangle squareRect)
         {

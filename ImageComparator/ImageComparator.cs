@@ -18,20 +18,22 @@ namespace ImageComparator
         /// <summary>
         /// Compares two bitmap images, detects differing regions, and outputs a result image.
         /// </summary>
+        /// 
         /// <param name="bitmap1">The first bitmap image to compare.</param>
         /// <param name="bitmap2">The second bitmap image to compare.</param>
-        /// <param name="bitmapResult">
-        /// A bitmap where the resulting image with highlighted differences will be drawn.
-        /// </param>
+        /// <param name="bitmapResult">A bitmap where the resulting image with highlighted differences will be drawn.</param>
+        ///
         /// <exception cref="ArgumentException">
         /// Thrown if the input images do not have the same dimensions.
         /// </exception>
+        ///
         /// <remarks>
         /// The comparison works by dividing the images into square regions of size defined in 
         /// <see cref="Settings.squareSize"/>. It then compares these regions pixel by pixel to 
         /// identify differences. If the differences exceed <see cref="Settings.DiffCount"/>, 
         /// the comparison terminates early.
         /// </remarks>
+        ///
         /// <example>
         /// <code>
         /// using Bitmap bitmap1 = new Bitmap("image1.jpg");
