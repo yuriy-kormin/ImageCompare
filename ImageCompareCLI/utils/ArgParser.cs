@@ -54,6 +54,7 @@ namespace ImageCompareCLI.Utils
         /// </remarks>
         public static void Parse(string[] args)
         {
+            var Correct = true;
             foreach (var arg in args)
             {
                 var split = arg.Split('=', 2);
@@ -63,10 +64,12 @@ namespace ImageCompareCLI.Utils
                 }
                 else
                 {
+                    Correct = false;
                     ConsolePrint.PrintError($"Warning: Ignored invalid argument '{arg}'.");
                 }
             }
-
+            if (!Correct){ConsolePrint.ShowUsage();}
+            
             if (!ArgValidator.IsArgValid())
             {
                 throw new ArgumentException("\t Invalid arguments. Break execution....");
